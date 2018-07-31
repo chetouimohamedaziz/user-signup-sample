@@ -14,18 +14,13 @@ targetCompatibility = 1.8
 
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
-
-    compile "net.logstash.logback:logstash-logback-encoder:4.11"
+    compile 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    compile 'com.github.fakemongo:fongo:2.1.0'
+    compile 'net.logstash.logback:logstash-logback-encoder:4.11'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile "io.rest-assured:rest-assured:3.1.0"
+    testCompile 'io.rest-assured:rest-assured:3.1.0'
 }
-
-processResources {
-    filesMatching("**/*.yml") { expand project.properties }
-}
-
-compileJava.dependsOn(processResources)
 
 test {
     outputs.upToDateWhen { false }
