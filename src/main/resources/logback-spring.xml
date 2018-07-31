@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Spring boot base -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.springframework.security.web.access" level="INFO"/>
+    <logger name="org.springframework.web.servlet.mvc" level="INFO"/>
+    <!-- Enable this logger to see errors about invalid parameters -->
+    <logger name="org.springframework.web.method.HandlerMethod" level="INFO"/>
+
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+    <logger name="jsonLogger" additivity="false" level="DEBUG">
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+    <root level="INFO">
+        <appender-ref ref="consoleAppender"/>
+    </root>
+
+</configuration>

@@ -1,0 +1,69 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.14.RELEASE'
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'java'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+
+    compile "net.logstash.logback:logstash-logback-encoder:4.11"
+
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile "io.rest-assured:rest-assured:3.1.0"
+}
+
+processResources {
+    filesMatching("**/*.yml") { expand project.properties }
+}
+
+compileJava.dependsOn(processResources)
+
+test {
+    outputs.upToDateWhen { false }
+    afterTest { desc, result ->
+        logger.info("${desc.className}.${desc.name} ➔ ${result.resultType}")
+    }
+    useJUnit {
+        exclude '**/*ApiTests.class'
+    }
+}
+
+task integrationTest(type: Test) {
+    outputs.upToDateWhen { false }
+    afterTest { desc, result ->
+        logger.info("${desc.className}.${desc.name} ➔ ${result.resultType}")
+    }
+    useJUnit {
+        include '**/*ApiTests.class'
+    }
+}
+
+integrationTest.mustRunAfter test
+
+jacocoTestReport {
+    reports {
+        html.destination file("${buildDir}/reports/tests/coverage")
+    }
+    executionData(test, integrationTest)
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+check.dependsOn integrationTest, jacocoTestReport, jacocoTestCoverageVerification
