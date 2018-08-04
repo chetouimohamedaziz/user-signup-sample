@@ -1,4 +1,6 @@
-# User SignUp Application - Sample for TDD sessions.
+# User SignUp Application
+
+A sample demo app for **Test Driven Development** sessions.
 
 ## Requirements
 
