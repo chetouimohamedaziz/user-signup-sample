@@ -14,15 +14,15 @@ public class SignUpService {
   }
 
   public void signUp(SignUpRequest signUpRequest) {
-    // save to db
+    User user = saveUser(signUpRequest);
+    smsApiClient.sendMessage(signUpRequest.phone, "Your verification code is " + user.getCode());
+  }
+
+  private User saveUser(SignUpRequest signUpRequest) {
     User user = new User(signUpRequest.login, signUpRequest.password, signUpRequest.phone);
     user.generateCode();
     signUpRepository.save(user);
-
-    // send sms
-    smsApiClient.sendMessage(signUpRequest.phone, "Your verification code is " + user.getCode());
-
+    return user;
   }
-
 
 }
