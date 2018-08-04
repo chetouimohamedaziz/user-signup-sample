@@ -1,3 +1,8 @@
+sms:
+  api_key: your_api_key
+  api_secret: your_api_key
+  from: Test
+
 management:
   security:
     enabled: false
